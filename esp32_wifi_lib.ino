@@ -11,16 +11,25 @@ void setup() {
   
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print("Attempting to connect to WEP network, SSID: ");
+    tryToConnect();
   }
  
 }
 
 void tryToConnect(){
+  // Check for available WiFis
+  
+  // Open BLE Connection
+
+
+  // Wait for WiFi Credentials
+
+  // Connect to WiFi
   
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // Check for Connection Status
 
 }
 
