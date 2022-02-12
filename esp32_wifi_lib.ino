@@ -122,7 +122,7 @@ String scanForWiFis() {
   Serial.println("scan done");
   if (numberOfWiFiNetworks == 0) {
     Serial.println("No networks found");
-    return "No networks found";
+    return names;
   }
   for (int i = 0; i < numberOfWiFiNetworks; i++) {
     Serial.println(WiFi.SSID(i));
