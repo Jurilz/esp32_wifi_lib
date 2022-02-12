@@ -18,26 +18,29 @@
 #define LED_BUILTIN 2
 
 int numberOfWiFiNetworks;
-char ssid[] = "myhomeismyKassel";
-// needs third charactersistics
+//char ssid[] = "myhomeismyKassel";
 BLECharacteristic *wifiConnectionStatus;
 BLECharacteristic *availableWifiNetworks;
-
+boolean bleServerStarted = false;
 
 
 class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string const value = pCharacteristic->getValue();
 
-      const char* p = value.c_str();
-
+      char* p = strdup(value.c_str());
       if (value.length() > 0) {
         for (int i = 0; i < value.length(); i++) {
           Serial.print(value[i]);
         }
         Serial.println();
-        connectToWiFi(p);
+
+        char* ssid = strtok(p,"\r\n");
+        char* pw = strtok(NULL,"\r\n");
+        
+        connectToWiFi(ssid, pw);
       }
+      free(p);
     }
 };
 
@@ -48,79 +51,82 @@ void setup() {
 
   // Pin mode for LED Pin
   pinMode(LED_BUILTIN, OUTPUT);
-
-  setupBLEServer();
 }
 
-void setupBLEServer(){
-  // BLE geraffel nur wenn keine wifi connection
-  BLEDevice::init("MyESP32");
-  BLEServer *wifiConfigureServer = BLEDevice::createServer();
-
-  BLEService *wifiConfigureService = wifiConfigureServer->createService(SERVICE_UUID);
-
-  availableWifiNetworks = wifiConfigureService->createCharacteristic(
-        AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID,
-        BLECharacteristic::PROPERTY_READ |
-        BLECharacteristic::PROPERTY_WRITE
-      );
-  wifiConnectionStatus = wifiConfigureService->createCharacteristic(
-                           CONNECTION_STATUS_CHARACTERISTIC_UUID,
-                           BLECharacteristic::PROPERTY_READ
-                         );
-  updateConnectionStatus();
+void startBLE(){
+    // BLE geraffel nur wenn keine wifi connection
+  if (!bleServerStarted) {
+    BLEDevice::init("MyESP32");
+    BLEServer *wifiConfigureServer = BLEDevice::createServer();
   
-  availableWifiNetworks->setCallbacks(new MyCallbacks());
-  String s = scanForWiFis();
-
-  // depens upon connection status
-  availableWifiNetworks->setValue(s.c_str());
-  wifiConfigureService->start();
-
-  BLEAdvertising *pAdvertising = wifiConfigureServer->getAdvertising();
-  pAdvertising->start();
+    bleServerStarted = true;
+    
+    BLEService *wifiConfigureService = wifiConfigureServer->createService(SERVICE_UUID);
+  
+    availableWifiNetworks = wifiConfigureService->createCharacteristic(
+          AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID,
+          BLECharacteristic::PROPERTY_READ |
+          BLECharacteristic::PROPERTY_WRITE
+        );
+    wifiConnectionStatus = wifiConfigureService->createCharacteristic(
+                             CONNECTION_STATUS_CHARACTERISTIC_UUID,
+                             BLECharacteristic::PROPERTY_READ
+                           );
+  //  updateConnectionStatus();
+    
+    availableWifiNetworks->setCallbacks(new MyCallbacks());
+    String s = scanForWiFis();
+  
+    // depens upon connection status
+    availableWifiNetworks->setValue(s.c_str());
+    wifiConfigureService->start();
+  
+    BLEAdvertising *pAdvertising = wifiConfigureServer->getAdvertising();
+    pAdvertising->start();
+  }
 }
 
-void tearDownBLEServer(){
-  //BLEDevice::deinit(true);
+void tearBLEDown(){
+  BLEDevice::deinit(true);
+  bleServerStarted = false;
 }
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
-    tearDownBLEServer();
-    printSomeDebuvStuff();
-    digitalWrite(LED_BUILTIN, HIGH);
-  } else {
-    digitalWrite(LED_BUILTIN, LOW);
-    setupBLEServer();
-  }
-  updateConnectionStatus();
-  delay(3000);
-}
-
-void updateConnectionStatus() {
-  int&& wifiStatus = WiFi.status();
-  wifiConnectionStatus->setValue(wifiStatus);
-  wifiConnectionStatus->notify();
-}
-
-void printSomeDebuvStuff(){
     Serial.println("Connected to wifi");
     IPAddress myAddress = WiFi.localIP();
     Serial.print("RRSI: ");
     Serial.println(WiFi.RSSI());
     Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
+    digitalWrite(LED_BUILTIN, HIGH);
+    tearBLEDown();
+  } else {
+    digitalWrite(LED_BUILTIN, LOW);
+    startBLE();
+  }
+  // no need if BLE is torn down
+  // updateConnectionStatus();
+  delay(3000);
 }
 
-void sendAvailableWifiNetworks(){
-  String s = scanForWiFis();
-  // depens upon connection status
-  availableWifiNetworks->setValue(s.c_str());
-  availableWifiNetworks->notify();
-}
+//void updateConnectionStatus() {
+//  int&& wifiStatus = WiFi.status();
+//  if (wifiConnectionStatus) {
+//    wifiConnectionStatus->setValue(wifiStatus);
+//    wifiConnectionStatus->notify();
+//  }
+//}
 
-void connectToWiFi(const char pw[]) {
+//void sendAvailableWifiNetworks(){
+//  String s = scanForWiFis();
+//  // depens upon connection status
+//  if (availableWifiNetworks){
+//    availableWifiNetworks->setValue(s.c_str());
+//  }
+//}
+
+void connectToWiFi(const char ssid[], const char pw[]) {
   WiFi.begin(ssid, pw);
   delay(10000);
   if (WiFi.status() == WL_CONNECTED) {
