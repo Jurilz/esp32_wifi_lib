@@ -90,12 +90,11 @@ void startBLE(){
 
   BLEAdvertising* pAdvertising = wifiConfigureServer->getAdvertising();
   pAdvertising->start();
- 
 }
 
 
 
-void tearBLEDown(){
+void stopBLE(){
   if (!bleServerStarted) return;
   BLEDevice::deinit(true);
   bleServerStarted = false;
@@ -109,7 +108,7 @@ void loop() {
     Serial.println(WiFi.RSSI());
     Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
-    tearBLEDown();
+    stopBLE();
   } else {
     startBLE();
   }
