@@ -23,6 +23,14 @@ boolean bleServerStarted = false;
 
 void setUpBLECharacteristics(BLEService* wifiConfigureService);
 
+void connectToWiFi(const char ssid[], const char pw[]) {
+  WiFi.begin(ssid, pw);
+  delay(10000);
+  if (WiFi.status() == WL_CONNECTED) {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+}
+
 class WifiConfigurationCallback: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string const value = pCharacteristic->getValue();
@@ -67,26 +75,28 @@ void setUpBLECharacteristics(BLEService* wifiConfigureService){
 }
 
 void startBLE(){
-  if (!bleServerStarted) {
-    BLEDevice::init("MyESP32");
-    BLEServer *wifiConfigureServer = BLEDevice::createServer();
+  if (bleServerStarted) return;
   
-    bleServerStarted = true;
-    
-    BLEService* wifiConfigureService = wifiConfigureServer->createService(SERVICE_UUID);
+  BLEDevice::init("MyESP32");
+  BLEServer *wifiConfigureServer = BLEDevice::createServer();
 
-    setUpBLECharacteristics(wifiConfigureService);
-
-    wifiConfigureService->start();
+  bleServerStarted = true;
   
-    BLEAdvertising* pAdvertising = wifiConfigureServer->getAdvertising();
-    pAdvertising->start();
-  }
+  BLEService* wifiConfigureService = wifiConfigureServer->createService(SERVICE_UUID);
+
+  setUpBLECharacteristics(wifiConfigureService);
+
+  wifiConfigureService->start();
+
+  BLEAdvertising* pAdvertising = wifiConfigureServer->getAdvertising();
+  pAdvertising->start();
+ 
 }
 
 
 
 void tearBLEDown(){
+  if (!bleServerStarted) return;
   BLEDevice::deinit(true);
   bleServerStarted = false;
 }
@@ -99,22 +109,11 @@ void loop() {
     Serial.println(WiFi.RSSI());
     Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
-//    digitalWrite(LED_BUILTIN, HIGH);
     tearBLEDown();
   } else {
-//    digitalWrite(LED_BUILTIN, LOW);
     startBLE();
   }
   delay(3000);
-}
-
-
-void connectToWiFi(const char ssid[], const char pw[]) {
-  WiFi.begin(ssid, pw);
-  delay(10000);
-  if (WiFi.status() == WL_CONNECTED) {
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
 }
 
 String scanForWiFis() {
