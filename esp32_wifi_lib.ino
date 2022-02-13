@@ -14,9 +14,9 @@
 #define LED_BUILTIN 2
 
 // BLE UUIDs
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define CONNECTION_STATUS_CHARACTERISTIC_UUID "59a3861e-8d11-4f40-9597-912f562e4759"
+#define SERVICE_UUID                                  "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID    "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define WIFI_SETUP_CHARACTERISTIC_UUID                "59a3861e-8d11-4f40-9597-912f562e4759"
 
 #define BAUD_RATE 115200
 #define TIME_INTERVAL 3000
@@ -25,6 +25,8 @@
 BLECharacteristic *availableWifiNetworks;
 BLECharacteristic *wifiConfiguration;
 boolean bleServerStarted = false;
+
+//TODO: remove all debug printouts
 
 void setUpBLECharacteristics(BLEService* wifiConfigureService);
 
@@ -70,7 +72,7 @@ void setUpBLECharacteristics(BLEService* wifiConfigureService){
           AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID,
           BLECharacteristic::PROPERTY_READ);
     wifiConfiguration = wifiConfigureService->createCharacteristic(
-                             CONNECTION_STATUS_CHARACTERISTIC_UUID,
+                             WIFI_SETUP_CHARACTERISTIC_UUID,
                              BLECharacteristic::PROPERTY_WRITE);
     
     wifiConfiguration->setCallbacks(new WifiConfigurationCallback());
@@ -94,6 +96,7 @@ void startBLE(){
   wifiConfigureService->start();
 
   BLEAdvertising* pAdvertising = wifiConfigureServer->getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
   pAdvertising->start();
 }
 
@@ -126,7 +129,6 @@ void loop() {
 }
 
 String scanForWiFis() {
-  // WiFi.scanNetworks will return the number of networks found
   int numberOfWiFiNetworks = WiFi.scanNetworks();
   String names;
   Serial.println("scan done");
