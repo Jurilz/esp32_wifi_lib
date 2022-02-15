@@ -38,6 +38,16 @@ void connectToWiFi(const char ssid[], const char pw[]) {
   }
 }
 
+//class ServerCallback: public BLEServerCallbacks {
+//
+//  void onConnect(BLEServer* pServer) {
+//      BLEDevice::startAdvertising();
+//    };
+//
+//  void onDisConnect(BLEServer* pServer) {
+//    pServer->getAdvertising()->start();
+//  }
+//}; 
 
 class WifiConfigurationCallback: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
