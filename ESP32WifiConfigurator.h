@@ -1,32 +1,58 @@
-#include <BLEDevice.h>
+/*
+  ESP32WifiConfigurator.h - Library for configuring the wifi credentials 
+  of a esp32 controller via BLE.
+  Author: J. Lozowoj
+  Created on: 18.02.2021.
+  Licence: GNU General Public License v3 (GPL-3).
+*/
+
+#include "Arduino.h"
+#include "BLEDevice.h"
+
+#ifndef ESP32WifiConfigurator_h
+#define ESP32WifiConfigurator_h
 
 class ESP32WifiConfigurator {
 
     private:
-        char[] _SERVICE_UUID;
-        char[] _AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID;
-        char[] _WIFI_SETUP_CHARACTERISTIC_UUID;
-        int _WAIT_TIME;   
+        char* _deviceName;
 
-        BLECharacteristic* _availableWifiNetworks;
+        static boolean _bleServerStarted;
+        
         BLECharacteristic* _wifiConfiguration;
-        boolean _bleServerStarted;
-
-        void connectToWiFi(const char ssid[], const char pw[]);
-
-        class WifiConfigurationCallback: public BLECharacteristicCallbacks;
-
+        
         void setUpBLECharacteristics(BLEService* wifiConfigureService);
 
         void startBLE();
 
-        void updateAvailableWifiNetworks();
-
-        void stopBLE();
-
         String scanForWiFis();
 
-    //TODO: maybe class constructor
     public:
-        void startWifiConfigurator(int TIME_INTERVAL);
+        ESP32WifiConfigurator();
+        
+        static BLECharacteristic* _availableWifiNetworks;
+
+        void startWifiConfigurator();
+
+        static void stopBLE();
+
+        static boolean connectToWiFi(const char ssid[], const char pw[]);
 };
+
+class WifiConfigurationCallback: public BLECharacteristicCallbacks {
+  public:
+	  WifiConfigurationCallback();
+	
+  private:
+    void onWrite(BLECharacteristic *pCharacteristic);
+};
+
+class GeneralCommunicationCallback: public BLECharacteristicCallbacks {
+  public:
+	  GeneralCommunicationCallback();
+	
+  private:
+    void onWrite(BLECharacteristic *pCharacteristic);
+};
+
+#endif
