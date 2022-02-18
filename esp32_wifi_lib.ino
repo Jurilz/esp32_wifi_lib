@@ -5,13 +5,13 @@
 #define BAUD_RATE 115200
 #define LED_BUILTIN 2
 
-ESP32WifiConfigurator fuck;
+ESP32WifiConfigurator wifiConfigurator;
 
 void setup()
 {
   Serial.begin(BAUD_RATE);
   pinMode(LED_BUILTIN, OUTPUT);
-  fuck.startWifiConfigurator();
+  wifiConfigurator.startWifiConfigurator();
 }
 
 void loop()
