@@ -42,6 +42,22 @@ They expect the WiFi name (SSID) and the passwort seperated by a newline charact
 On succes a notification (SUCCESS) is written to the *Available Networks Characteristics*.
 
 
+## General Information
+
+For development an ESP-Wroom-32 Controller was used.
+
+The memory consumption is about `1.3 MB` mostly due to usage of `WiFI.h` and `BLEDevice.h` libraries.
+
+The applied partion scheme was: `Huge App (3MB NO OTA/1MB SPIFFS)`.
+
+## Used Dependencies
+
+* Arduino.h
+* BLEDevice.h
+* BLEUtils.h
+* BLEServer.h
+* BLE2902.h
+* WiFi.h
 
 
 ## Licence
