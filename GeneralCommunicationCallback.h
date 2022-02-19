@@ -1,6 +1,5 @@
 /*
-  GeneralCommunicationCallback.h - Library for configuring the wifi credentials 
-  of a esp32 controller via BLE.
+  GeneralCommunicationCallback.h - BLECharacteristicCallbacks for ESP32WifiConfigurator library.
   Author: J. Lozowoj
   Created on: 18.02.2021.
   Licence: GNU General Public License v3 (GPL-3).
@@ -13,10 +12,11 @@
 
 class GeneralCommunicationCallback: public BLECharacteristicCallbacks {
   public:
-	  GeneralCommunicationCallback();
+	  GeneralCommunicationCallback(void (*pCallbackFunc)(const char message[]));
 	
   private:
     void onWrite(BLECharacteristic *pCharacteristic);
+    void (*_pCallbackFunc)(const char message[]);
 };
 
 #endif

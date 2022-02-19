@@ -5,7 +5,7 @@
 #define BAUD_RATE 115200
 #define LED_BUILTIN 2
 
-ESP32WifiConfigurator wifiConfigurator;
+ESP32WifiConfigurator wifiConfigurator("BLE-Server");
 
 void setup()
 {

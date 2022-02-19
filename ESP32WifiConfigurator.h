@@ -22,6 +22,14 @@ class ESP32WifiConfigurator {
         static boolean _bleServerStarted;
         
         BLECharacteristic* _wifiConfiguration;
+
+        static BLECharacteristic* _availableWifiNetworks;     
+
+        static void wifiSuccessCallback(const char ssid[], const char pw[]);
+
+        static void connectionClosedCallback(const char message[]);
+
+        static boolean connectToWiFi(const char ssid[], const char pw[]);
         
         void setUpBLECharacteristics(BLEService* wifiConfigureService);
 
@@ -30,14 +38,9 @@ class ESP32WifiConfigurator {
         String scanForWiFis();
 
     public:
-        ESP32WifiConfigurator();
-        
-        static BLECharacteristic* _availableWifiNetworks;
+      ESP32WifiConfigurator(char deviceName[]);
 
-        void startWifiConfigurator();
+      void startWifiConfigurator();
 
-        static void stopBLE();
-
-        static boolean connectToWiFi(const char ssid[], const char pw[]);
 };
 #endif
