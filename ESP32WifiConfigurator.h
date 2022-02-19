@@ -8,6 +8,8 @@
 
 #include "Arduino.h"
 #include "BLEDevice.h"
+#include "GeneralCommunicationCallback.h"
+#include "WifiConfiguratorCallback.h"
 
 #ifndef ESP32WifiConfigurator_h
 #define ESP32WifiConfigurator_h
@@ -38,21 +40,4 @@ class ESP32WifiConfigurator {
 
         static boolean connectToWiFi(const char ssid[], const char pw[]);
 };
-
-class WifiConfigurationCallback: public BLECharacteristicCallbacks {
-  public:
-	  WifiConfigurationCallback();
-	
-  private:
-    void onWrite(BLECharacteristic *pCharacteristic);
-};
-
-class GeneralCommunicationCallback: public BLECharacteristicCallbacks {
-  public:
-	  GeneralCommunicationCallback();
-	
-  private:
-    void onWrite(BLECharacteristic *pCharacteristic);
-};
-
 #endif

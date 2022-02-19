@@ -15,14 +15,16 @@
 #include "BLE2902.h"
 #include "WiFi.h"
 #include "ESP32WifiConfigurator.h"
+#include "GeneralCommunicationCallback.h"
+#include "WifiConfiguratorCallback.h"
 
 #define _SERVICE_UUID                                  "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define _AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID    "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define _WIFI_SETUP_CHARACTERISTIC_UUID                "59a3861e-8d11-4f40-9597-912f562e4759"
 
-#define _NEW_LINE_SEPERATOR "\r\n"
-#define _CLOSED   "CLOSED"
-#define _SUCCESS  "SUCCESS"
+// #define _NEW_LINE_SEPERATOR "\r\n"
+// #define _CLOSED   "CLOSED"
+// #define _SUCCESS  "SUCCESS"
 
 #define _WAIT_TIME 5000
 #define LED_BUILTIN 2
@@ -118,43 +120,8 @@ String ESP32WifiConfigurator::scanForWiFis() {
   return names;
 }
 
-WifiConfigurationCallback::WifiConfigurationCallback() {}
 
-void WifiConfigurationCallback::onWrite(BLECharacteristic *pCharacteristic){
-  std::string const value = pCharacteristic->getValue();
 
-  char* message = strdup(value.c_str());
-  if (value.length() > 0) {
 
-    char* ssid = strtok(message, _NEW_LINE_SEPERATOR);
-    char* pw = strtok(NULL, _NEW_LINE_SEPERATOR);
-    
-    if (ESP32WifiConfigurator::connectToWiFi(ssid, pw)) {
-      ESP32WifiConfigurator::_availableWifiNetworks->setValue("SUCCESS");
-      ESP32WifiConfigurator::_availableWifiNetworks->notify();
-    }
-  }
-  free(message);
-}
-
-GeneralCommunicationCallback::GeneralCommunicationCallback() {}
-
-void GeneralCommunicationCallback::onWrite(BLECharacteristic *pCharacteristic){
-  std::string const value = pCharacteristic->getValue();
-
-  char* message = strdup(value.c_str());
-  if (value.length() > 0) {
-    for (int i = 0; i < value.length(); i++) {
-      Serial.print(value[i]);
-    }
-    Serial.println();
-    if (String(message).equals("CLOSED")) {
-      ESP32WifiConfigurator::stopBLE();
-    }
-
-  }
-  free(message);
-
-}
 
 

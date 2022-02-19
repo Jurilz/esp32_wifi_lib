@@ -24,7 +24,6 @@ void loop()
         Serial.print("SSID: ");
         Serial.println(WiFi.SSID());
   }
-  Serial.println("!!!!!  wetf   !!!!!! ");
   delay(3000);
     
 }
