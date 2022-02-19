@@ -14,6 +14,9 @@ GeneralCommunicationCallback::GeneralCommunicationCallback(void (*pCallbackFunc)
   _pCallbackFunc = pCallbackFunc;
 }
 
+/**
+ * @brief Reads characterstic and calls callback function.
+ */
 void GeneralCommunicationCallback::onWrite(BLECharacteristic *pCharacteristic){
   std::string const value = pCharacteristic->getValue();
 

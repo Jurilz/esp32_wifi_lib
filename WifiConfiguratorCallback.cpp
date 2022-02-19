@@ -15,6 +15,10 @@ WifiConfiguratorCallback::WifiConfiguratorCallback(void (*pCallbackFunc)(const c
   _pCallbackFunc = pCallbackFunc;
 }
 
+/**
+ * @brief Reads characterstic, extracts ssid and credentials and calls callback function
+ * with them.
+ */
 void WifiConfiguratorCallback::onWrite(BLECharacteristic *pCharacteristic){
   std::string const value = pCharacteristic->getValue();
 
