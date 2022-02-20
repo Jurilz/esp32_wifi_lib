@@ -37,7 +37,7 @@ They also listen to a *connection closed* (CLOSED) notification and shutdown the
 
 The *WiFi Setup Charactersistics* can be found via the UUID `59a3861e-8d11-4f40-9597-912f562e4759`.
 
-They expect the WiFi name (SSID) and the passwort seperated by a newline character (`\n`) and encoded as a byte array. An attempt is then made to establish a connection with the given WiFi.
+They expect the WiFi name (SSID) and the password seperated by a newline character (`\n`) and encoded as a byte array. An attempt is then made to establish a connection with the given WiFi.
 
 On succes a notification (SUCCESS) is written to the *Available Networks Characteristics*.
 
