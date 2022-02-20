@@ -2,7 +2,7 @@
 
 This Library enables you to set WiFi credentials for an ESP32 Controller via a BLE connection. After an WiFi connection is established the BLE server is shut down.
 
-It also scans the available WiFi networks and publishes them via the ...
+It also scans the available WiFi networks and publishes them via the [Available Network Characteristics](###available-networks).
 
 ## Usage
 
@@ -26,7 +26,7 @@ It advertises a BLE Service with the UUID `4fafc201-1fb5-459e-8fcc-c5c9c331914b`
 The BLE Service uses two BLE Characterstics for communication with a BLE Client.
 
 ### Available Networks Characteristics
-
+<a name="available-networks"></a>
 The *Available Networks Characteristics* can be found via the UUID `beb5483e-36e1-4688-b7f5-ea07361b26a8`. 
 
 First a list of all avaible WiFi networks are published via them. The SSIDs are seperated by a newline character (`\n`).
