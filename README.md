@@ -2,7 +2,7 @@
 
 This Library enables you to set WiFi credentials for an ESP32 Controller via a BLE connection. After an WiFi connection is established the BLE server is shut down.
 
-It also scans the available WiFi networks and publishes them via the [Available Network Characteristics](###Available-Networks-Characteristics).
+It also scans the available WiFi networks and publishes them via the Available Network Characteristics.
 
 ## Usage
 
