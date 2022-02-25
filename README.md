@@ -45,7 +45,7 @@ On succes a notification (SUCCESS) is written to the *Available Networks Charact
 
 For development an ESP-Wroom-32 Controller was used.
 
-The memory consumption is about `1.3 MB` mostly due to usage of `WiFI.h` and `BLEDevice.h` libraries.
+The memory consumption is about 1.3 MB mostly due to usage of `WiFI.h` (0.5 MB) and `BLEDevice.h` (0.8 MB) libraries.
 
 The applied partion scheme was: `Huge App (3MB NO OTA/1MB SPIFFS)`.
 
@@ -60,4 +60,4 @@ The applied partion scheme was: `Huge App (3MB NO OTA/1MB SPIFFS)`.
 
 
 ## Licence
-GNU General Public License v3 (GPL-3)
+Apache License 2.0 (Apache-2.0)
