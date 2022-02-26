@@ -91,9 +91,9 @@ void ESP32WifiConfigurator::setUpBLECharacteristics(BLEService* wifiConfigureSer
     
     _wifiConfiguration->setCallbacks(new WifiConfiguratorCallback(ESP32WifiConfigurator::wifiSuccessCallback));
     _wifiConfiguration->addDescriptor(new BLE2902());
-    String scannedNetworkNames = scanForWiFis();
+//    String scannedNetworkNames = scanForWiFis();
 
-    _availableWifiNetworks->setValue(scannedNetworkNames.c_str());
+//    _availableWifiNetworks->setValue(scannedNetworkNames.c_str());
 }
 
 /**
