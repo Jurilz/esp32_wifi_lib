@@ -126,6 +126,7 @@ void ESP32WifiConfigurator::startBLE(){
 String ESP32WifiConfigurator::scanForWiFis() {
   int numberOfWiFiNetworks = WiFi.scanNetworks();
   String names;
+  //TODO: check if String does not exceed maximum value
   for (int i = 0; i < numberOfWiFiNetworks; i++) {
       names += WiFi.SSID(i);
       if (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) {
