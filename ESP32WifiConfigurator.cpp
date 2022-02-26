@@ -122,7 +122,13 @@ String ESP32WifiConfigurator::scanForWiFis() {
   int numberOfWiFiNetworks = WiFi.scanNetworks();
   String names;
   for (int i = 0; i < numberOfWiFiNetworks; i++) {
-      names += WiFi.SSID(i) + "\n";
+      names += WiFi.SSID(i);
+      if (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) {
+        names += "0";
+      } else {
+        names += "1";
+      }
+      names += "\n";
   }
   return names;
 }
