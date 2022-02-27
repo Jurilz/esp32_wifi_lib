@@ -28,7 +28,6 @@
 
 #define _WAIT_TIME 5000
 //TODO: for debug
-#define LED_BUILTIN 2
 
 
 BLECharacteristic* ESP32WifiConfigurator::_availableWifiNetworks = nullptr;
@@ -65,8 +64,6 @@ boolean ESP32WifiConfigurator::connectToWiFi(const char ssid[], const char pw[])
 
   delay(_WAIT_TIME);
   if (WiFi.status() == WL_CONNECTED) {
-      // TODO: remove this, debug only
-      digitalWrite(LED_BUILTIN, HIGH);
       return true;
   }
   return false;
