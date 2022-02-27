@@ -21,12 +21,15 @@ void GeneralCommunicationCallback::onWrite(BLECharacteristic *pCharacteristic){
   std::string const value = pCharacteristic->getValue();
 
   char* message = strdup(value.c_str());
+  //DEBUG
+//  Serial.println("!!!!!!!  This ist the GeneralCommunication Callback !!!!!!!!!!!");
+//  Serial.println("!!!!!!!  This ist the GeneralCommunication Callback !!!!!!!!!!!");
   if (value.length() > 0) {
-    // TODO: remove debug printing
-    for (int i = 0; i < value.length(); i++) {
-      Serial.print(value[i]);
-    }
-    Serial.println();
+//    // TODO: remove debug printing
+//    for (int i = 0; i < value.length(); i++) {
+//      Serial.print(value[i]);
+//    }
+//    Serial.println();
     // 
     _pCallbackFunc(message);
   }
