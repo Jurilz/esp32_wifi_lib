@@ -58,6 +58,10 @@ The applied partion scheme was: `Huge App (3MB NO OTA/1MB SPIFFS)`.
 * BLE2902.h
 * WiFi.h
 
+## Documentation
+
+More information can be found [here](https://jurilz.github.io/wifi-esp32-docs/).
+
 
 ## Licence
 Apache License 2.0 (Apache-2.0)
