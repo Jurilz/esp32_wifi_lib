@@ -123,15 +123,20 @@ void ESP32WifiConfigurator::startBLE(){
 String ESP32WifiConfigurator::scanForWiFis() {
   int numberOfWiFiNetworks = WiFi.scanNetworks();
   String names;
-  //TODO: check if String does not exceed maximum value
   for (int i = 0; i < numberOfWiFiNetworks; i++) {
-      names += WiFi.SSID(i);
+      String newWiFi = WiFi.SSID(i);
+      
       if (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) {
-        names += "0";
+        newWiFi += "0";
       } else {
-        names += "1";
+        newWiFi += "1";
       }
-      names += "\n";
+      newWiFi += "\n";
+
+    //ESP_GATT_MAX_ATTR_LEN is 600 Bytes
+    if (sizeof(names + newWiFi) < 600){
+      names += newWiFi;
+    }
   }
   return names;
 }
