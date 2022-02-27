@@ -55,7 +55,7 @@ void ESP32WifiConfigurator::startWifiConfigurator() {
  * @param pw    the credentials for the wifi network to connect to
  */
 boolean ESP32WifiConfigurator::connectToWiFi(const char ssid[], const char pw[]) {
-  WiFi.disconnect();
+//  WiFi.disconnect();
   if (String(pw).length() == 0) {
     WiFi.begin(ssid);
   } else {
