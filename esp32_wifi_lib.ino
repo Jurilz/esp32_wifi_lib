@@ -25,5 +25,4 @@ void loop()
         Serial.println(WiFi.SSID());
   }
   delay(3000);
-    
 }
