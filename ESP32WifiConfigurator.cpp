@@ -157,7 +157,7 @@ void ESP32WifiConfigurator::wifiSuccessCallback(const char ssid[], const char pw
 void ESP32WifiConfigurator::connectionClosedCallback(const char message[]) {
       if (String(message).equals(_CLOSED)) {
         // shuts down BLE Server
-        //BLEDevice::deinit(true);
+        
          xTaskCreate(
             stopBLE,    // Function that should be called
             "Stop BLE",   // Name of the task (for debugging)
