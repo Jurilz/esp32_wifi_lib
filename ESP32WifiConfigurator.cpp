@@ -176,7 +176,7 @@ void ESP32WifiConfigurator::connectionClosedCallback(const char message[]) {
             stopBLE,    
             "Stop BLE",
             1000,
-            NULL
+            NULL,
             1,
             NULL
         );
