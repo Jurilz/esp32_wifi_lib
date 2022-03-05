@@ -47,6 +47,17 @@ void ESP32WifiConfigurator::startWifiConfigurator() {
     }
 }
 
+/**
+ * @brief Disconnects from current WiFi connection and starts the BLE Server.
+ */
+void ESP32WifiConfigurator::restartWifiConfigurator() {
+    WiFi.disconnect();
+    if (WiFi.getMode() != WIFI_STA) {
+       WiFi.mode(WIFI_STA);
+    }
+    startBLE();
+}
+
 
 /**
  * @brief Connects to the given wifi network.
