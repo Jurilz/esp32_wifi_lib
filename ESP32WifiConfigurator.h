@@ -37,6 +37,8 @@ class ESP32WifiConfigurator {
 
         String scanForWiFis();
 
+        static void stopBLE(void* parameter);
+
     public:
       ESP32WifiConfigurator(char deviceName[]);
 
