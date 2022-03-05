@@ -18,8 +18,6 @@ class ESP32WifiConfigurator {
 
     private:
       char* _deviceName;
-
-      static boolean _bleServerStarted;
       
       BLECharacteristic* _wifiConfiguration;
 
