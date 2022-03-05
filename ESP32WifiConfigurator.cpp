@@ -10,8 +10,6 @@
 
 #include "Arduino.h"
 #include "BLEDevice.h"
-//#include "BLEServer.h"
-#include "BLEServer.h"
 #include "BLE2902.h"
 #include "WiFi.h"
 #include "ESP32WifiConfigurator.h"
