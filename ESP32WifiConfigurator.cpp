@@ -22,9 +22,12 @@
 #define _AVAILABE_WIFI_NETWORKS_CHARACTERISTIC_UUID    "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define _WIFI_SETUP_CHARACTERISTIC_UUID                "59a3861e-8d11-4f40-9597-912f562e4759"
 
-
 #define _CLOSED   "CLOSED"
 #define _SUCCESS  "SUCCESS"
+
+#define _OPEN_WIFI            "0"
+#define _CLOSED_WIFI          "1"
+#define _NEW_LINE_SEPERATOR   "\n"
 
 #define _WAIT_TIME 5000
 //TODO: for debug
@@ -135,11 +138,11 @@ String ESP32WifiConfigurator::scanForWiFis() {
       String newWiFi = WiFi.SSID(i);
       
       if (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) {
-        newWiFi += "0";
+        newWiFi += _OPEN_WIFI;
       } else {
-        newWiFi += "1";
+        newWiFi += _CLOSED_WIFI;
       }
-      newWiFi += "\n";
+      newWiFi += _NEW_LINE_SEPERATOR;
 
     //ESP_GATT_MAX_ATTR_LEN is 600 Bytes
     if (sizeof(names + newWiFi) < 600){
