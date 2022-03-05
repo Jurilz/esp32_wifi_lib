@@ -38,7 +38,7 @@ ESP32WifiConfigurator::ESP32WifiConfigurator(char deviceName[]) {
 }
 
 /**
- * @brief Return the characteristic by handle.
+ * @brief Checks for WiFi connection and starts the BLE Server if no connection is present.
  */
 void ESP32WifiConfigurator::startWifiConfigurator() {
     WiFi.mode(WIFI_STA);
@@ -151,7 +151,7 @@ void ESP32WifiConfigurator::wifiSuccessCallback(const char ssid[], const char pw
 }
 
 /**
- * @brief Checks if the mobily App closed the connection and shuts down the BLE Server.
+ * @brief Checks if the mobily App closed the connection and creats a RTOS task to shut down the BLE Server.
  * @param message  containing the App message
  */
 void ESP32WifiConfigurator::connectionClosedCallback(const char message[]) {
@@ -159,17 +159,19 @@ void ESP32WifiConfigurator::connectionClosedCallback(const char message[]) {
         // shuts down BLE Server
         
          xTaskCreate(
-            stopBLE,    // Function that should be called
-            "Stop BLE",   // Name of the task (for debugging)
-            1000,            // Stack size (bytes)
-            NULL,            // Parameter to pass
-            1,               // Task priority
-            NULL             // Task handle
+            stopBLE,    
+            "Stop BLE",
+            1000,
+            NULL
+            1,
+            NULL
         );
     }
 }
 
-
+/**
+ * @brief RTOS task to shut down the BLE Server without releasing the memory.
+ */
 void ESP32WifiConfigurator::stopBLE(void* parameter) {
    BLEDevice::deinit(false);
    vTaskDelete(NULL);
