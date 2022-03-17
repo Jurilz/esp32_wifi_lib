@@ -18,7 +18,6 @@ void loop()
 {
     if (WiFi.status() == WL_CONNECTED) {
         Serial.println("Connected to wifi");
-        IPAddress myAddress = WiFi.localIP();
         Serial.print("RRSI: ");
         Serial.println(WiFi.RSSI());
         Serial.print("SSID: ");
